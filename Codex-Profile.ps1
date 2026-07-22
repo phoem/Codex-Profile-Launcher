@@ -148,6 +148,11 @@ if ($PSCmdlet.ParameterSetName -eq 'Status') {
     return
 }
 
+if ($Profile -eq '--help') {
+    Show-LauncherHelp
+    return
+}
+
 if ([string]::IsNullOrWhiteSpace($Profile)) {
     $Profile = $DefaultProfile
 }
@@ -169,7 +174,7 @@ elseif ($profileConfig.Mode -eq 'Isolated') {
     try {
         $env:CODEX_HOME = $paths.CodexHome
         $process = Start-Process -FilePath $exe -ArgumentList @(
-            "--user-data-dir=$($paths.WebData)"
+            "--user-data-dir=`"$($paths.WebData)`""
         ) -PassThru
     }
     finally {
